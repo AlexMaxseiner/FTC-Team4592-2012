@@ -17,7 +17,8 @@ const tMUXSensor rightIRDev = msensor_S3_4;
 
 int right = 0;
 int left = 0;
-
+int leftFive[] = {0,0,0,0,0};
+int rightFive[] = {0,0,0,0,0};
 float leftTotal = 0;
 float leftAverage = 0;
 int rightNumOfReadings = 0;
@@ -76,6 +77,7 @@ bool rightIRGoingLeft = false;
 bool leftin5 = false;
 bool rightin5 = false;
 
+int findColumn();
 task PostCalc();
 task swivle();
 task updateIRVals();
@@ -110,6 +112,20 @@ float calcPosX(Angles angles){
 	float y = ((dist*sinDegrees(a))/sinDegrees(180-a-b))*sinDegrees(b);
 	return 0.5*dist-sqrt(B*B-y*y);
 }
+int findColumn(){
+	wait1Msec(1000);
+
+/*	if(((ly2 < 100) && (ly2 > 85)) && ((lx2 < 165) && (lx2 > 105))){
+		column = 2;
+	}
+	else if((( ly2 > 0) && (ly2 < 60)) && ((lx2 < 120) && (lx2 > 40)))
+		column = 1;
+
+	//else if((( lx2 >
+	*/
+	return 5;//column;
+
+}
 
 float calcPosY(Angles angles){
 	float a = angles.leftAngle;
@@ -136,24 +152,39 @@ void act(Positions pos);
 
 void doCyborgVision(){
 	StartTask (updateIRVals);
-	StartTask (swivle);
+	wait1Msec(500);
+	/*StartTask (swivle);
 	while(true)
 	{
 		getLeftAngles();
 		getRightAngles();
+		findColumn();
 	}
-	wait1Msec(9000);
-	StartTask (PostCalc);*/
-	Positions tmp;
-  tmp.x = 0;
-  tmp.y = 24;
-  act(tmp);
+	*/
+		servo[leftIR] = 129;
+		servo[rightIR] = 121;
+		if(left == 5 && right == 5)
+		{
+			column = 2;
+		}
+		else if(right == 3 && left == 4)
+		{
+			column = 1;
+		}
+		else
+		{
+			column = 3;
+		}
+	//wait1Msec(9000);
+	//StartTask (PostCalc);
 }
 task updateIRVals() {
     while(true)
     {
     	if(!safe)
     	{
+    		HTIRS2readAllACStrength(leftIRDev,leftFive[0],leftFive[1],leftFive[2],leftFive[3],leftFive[4]);
+    		HTIRS2readAllACStrength(rightIRDev,rightFive[0],rightFive[1],rightFive[2],rightFive[3],rightFive[4]);
         left = HTIRS2readACDir(leftIRDev);
         right = HTIRS2readACDir(rightIRDev);
         safe = true;

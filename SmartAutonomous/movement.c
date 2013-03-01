@@ -46,24 +46,45 @@ void forward(float distance) {   //forward function to pass in a length in inche
 	motor[rightDrive] = 0;
 }
 void turn(float degrees) {
-	const float fullturn = 10498;//encoder value for 360 degrees
-	float turn = degrees*(fullturn/360.0);
+
+//	const float fullturn = 10498;	//encoder value for 360 degrees
+
+	float requestedturn = abs (degrees*(10300/360.0));
+	bool leftturn = false;
+	bool rightturn = false;
+
 	nMotorEncoder[leftDrive] = 0;
 	nMotorEncoder[rightDrive] = 0;
-	while(abs(nMotorEncoder[leftDrive]) < turn && abs(nMotorEncoder[rightDrive]) < turn) {
-		if(degrees > 0) {
-			motor[leftDrive] = -100;
-			motor[rightDrive] = 100;
-		}
-		else if(degrees < 0)
+
+	// determine if this is a right turn, left turn, or no turn
+	if (degrees > 0)
+	{
+		rightturn = true;
+	}
+	else if (degrees < 0)
+	{
+		leftturn = true;
+	}
+
+	while (abs(nMotorEncoder[leftDrive]) < requestedturn && abs(nMotorEncoder[rightDrive]) < requestedturn)
+	{
+		if (rightturn)
 		{
 			motor[leftDrive] = 100;
 			motor[rightDrive] = -100;
 		}
+		else if (leftturn)
+		{
+			motor[leftDrive] = -100;
+			motor[rightDrive] = 100;
+		}
 	}
 	motor[leftDrive] = 0;
 	motor[rightDrive] = 0;
+	leftturn = false;
+	rightturn = false;
 }
+
 long long leftVal1298870 = 0;
 long long rightVal1298870 = 0;
 long long totLe1298870 = 0;

@@ -14,8 +14,6 @@ const tMUXSensor Light6 = msensor_S3_2;
 const float distBetweenLightSens = 1.0 + (7.0/8.0);
 const int LINE_TOLERANCE = 80;
 
-const int LINE_TOLERANCE = 80;
-
 int LightSensors[6] = {100,100,100,100,100,100};
 
 bool goingForward = false;
