@@ -1,6 +1,8 @@
 #ifndef RIGID_C
 #define RIGID_C
+
 #include "Cyborggoodstuff.c"
+
 bool linefound();
 bool findline();
 const float dist2rack = 75;

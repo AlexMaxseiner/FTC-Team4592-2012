@@ -23,16 +23,15 @@ const float POWERCHANGE = 2;
 #include "doLineFollow.c"
 #include "Rigid.c"
 #include "Cyborggoodstuff.c"
-
-float calculatedY = 0;
-float calculatedX = 0;
+#include "stuffthatisdumb.c"
 void initializeRobot();
 task main()
 {
   servo[ring] = 0;
   initializeRobot();
   //waitForStart(); // Wait for the beginning of autonomous phase.
-  doRidgid();
+  //doRidgid();
+  dodumb();
   //doLineFollow();
   //doReleaseRing();
   while (true)
